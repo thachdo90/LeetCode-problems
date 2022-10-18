@@ -16,22 +16,48 @@
   // iterate through each row of bricks, update where the edges are in an object
   // compare edges object to bricksCrossed object, if an edge isn't there, then we've crossed a brick
 // get min value of values in brickCrossed object
+// var leastBricks = function(wall) {
+//   let wallLength = wall[0].reduce((accumulator, element) => accumulator + element, 0);
+//   if (wallLength === 1) {
+//     return wall.length;
+//   }
+//   let bricksCrossed = {}; // bricksCrossed[index] = # of bricks crossed
+//   for (let row of wall) {
+//     let index = 0;
+//     let edges = {}; //edges[index] = true for every brick edge
+//     for (let brick of row) {
+//       index += brick;
+//       edges[index] = true;
+//     }
+//     for (let i = 1; i < wallLength; i++) {
+//       if (!edges[i]) bricksCrossed[i] = (bricksCrossed[i] || 0) + 1;
+//     }
+//   }
+//   return Math.min(...Object.values(bricksCrossed));
+// };
+
+// first idea exceeded heap memory, a lot of redundancy and space used
+// can optimize space by return height of wall - max of edges at any given index. That way, we don't care about indices that don't have an edge
+// edge case, each row is one brick of a massive size, so the object would be empty
+// if edges object is empty, return the height of the wall
 var leastBricks = function(wall) {
   let wallLength = wall[0].reduce((accumulator, element) => accumulator + element, 0);
+  let wallHeight = wall.length;
   if (wallLength === 1) {
     return wall.length;
   }
-  let bricksCrossed = {}; // bricksCrossed[index] = # of bricks crossed
+  let edges = {}; // edges[index] = # of edges at this index
   for (let row of wall) {
     let index = 0;
-    let edges = {}; //edges[index] = true for every brick edge
-    for (let brick of row) {
-      index += brick;
-      edges[index] = true;
-    }
-    for (let i = 1; i < wallLength; i++) {
-      if (!edges[i]) bricksCrossed[i] = (bricksCrossed[i] || 0) + 1;
+    // not necessary to process last brick of each row
+    for (let i = 0; i < row.length - 1; i++) {
+      index += row[i];
+      edges[index] = (edges[index] || 0) + 1;
     }
   }
-  return Math.min(...Object.values(bricksCrossed));
+  if (Object.values(edges).length === 0) {
+    return wallHeight;
+  } else {
+    return wallHeight - Math.max(...Object.values(edges));
+  }
 };
