@@ -65,22 +65,22 @@ const minDegree = (edges) => {
 // test cases:
 let n, edges, result;
 // Test 1:
-n = 6;
-edges = [[1,2],[1,3],[3,2],[4,1],[5,2],[3,6]]
-result = minDegree(edges);
-if (result === 3) {
-  console.log('test passed')
-} else {
-  console.log('test failed: expected ', 3, ' but got ', result);
-}
-
-// test 2:
-// n = 7;
-// edges = [[1,3], [4,1], [4,3], [2,5], [5,6], [6,7], [7,5], [2,6]];
-
+// n = 6;
+// edges = [[1,2],[1,3],[3,2],[4,1],[5,2],[3,6]]
 // result = minDegree(edges);
-// if (result === 0) {
+// if (result === 3) {
 //   console.log('test passed')
 // } else {
-//   console.log('test failed: expected ', 0, ' but got ', result);
+//   console.log('test failed: expected ', 3, ' but got ', result);
 // }
+
+// test 2:
+n = 7;
+edges = [[1,3], [4,1], [4,3], [2,5], [5,6], [6,7], [7,5], [2,6]];
+
+result = minDegree(edges);
+if (result === 0) {
+  console.log('test passed')
+} else {
+  console.log('test failed: expected ', 0, ' but got ', result);
+}
