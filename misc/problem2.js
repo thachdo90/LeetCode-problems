@@ -18,6 +18,7 @@ const order = (logs) => {
   let letterLogs = [];
   let storage = {};
 
+  // categorizes log as digit or letter logs and store them accordingly
   const process = (log) => {
     let separator = log.indexOf(' ');
     let identifier = log.slice(0, separator);
@@ -31,18 +32,16 @@ const order = (logs) => {
         storage[content] = [identifier]
       }
     } else {
-      // console.log(log, ' is a digit log')
       digitLogs.push(log)
     }
   }
 
   logs.forEach(log => process(log))
 
+  // process letter logs into letterLogs array
   let letterContents = Object.keys(storage);
   letterContents.sort();
-  // console.log('sorted keys', letterContents)
   for (let content of letterContents) {
-    // console.log('looking for ', content, 'which should be ', storage[content] )
     if (storage[content].length > 1) {
       let identifiers = storage[content];
       identifiers.sort();
@@ -50,14 +49,10 @@ const order = (logs) => {
         letterLogs.push(identifier + ' ' + content);
       }
     } else {
-      // console.log('identifier is ', storage[content])
       letterLogs.push(storage[content][0] + ' ' + content)
     }
   }
 
-  // console.log(digitLogs);
-  // console.log(letterLogs);
-  // console.log(storage);
   let result = letterLogs.concat(digitLogs);
   return result;
 
