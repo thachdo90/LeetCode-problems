@@ -56,3 +56,23 @@ var maxArea = function(height) {
 
 //   return maxArea;
 // }
+
+// left and right pointer approach (after watching solution video)
+// what worked about this is that they found a pattern that allowed us to confidently move the pointer forward based on the comparison of the left and right heights. We don't have to worry about tracking previously seen heights because we know that the other height already limits it
+var maxArea = function(height) {
+  let biggestArea = 0;
+  let leftPointer = 0;
+  let rightPointer = height.length -1;
+  while (leftPointer < rightPointer) {
+    let leftHeight = height[leftPointer];
+    let rightHeight = height[rightPointer];
+    let area = Math.min(leftHeight, rightHeight) * (rightPointer - leftPointer);
+    biggestArea = Math.max(biggestArea, area);
+    if (leftHeight <= rightHeight) {
+      leftPointer++;
+    } else {
+      rightPointer--;
+    }
+  }
+  return biggestArea;
+}
