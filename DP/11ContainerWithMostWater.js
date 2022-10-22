@@ -37,3 +37,22 @@ var maxArea = function(height) {
   }
   return maxArea;
 };
+
+// second strategy, didn't optimize any more
+// var maxArea = function(height) {
+//   let leftWalls = [[0,height[0]]]; //[index, height]
+//   let maxArea = 0;
+//   for (let i = 1; i < height.length; i++) {
+//     let currentHeight = height[i];
+//     for (leftWall of leftWalls) {
+//       let leftHeight = leftWall[1]
+//       let leftIndex = leftWall[0];
+//       let area = Math.min(leftHeight, currentHeight) * (i - leftIndex);
+//       maxArea = Math.max(maxArea, area);
+//     }
+//     let previousHeight = leftWalls[leftWalls.length - 1][1];
+//     if (currentHeight > previousHeight) leftWalls.push([i, height[i]]);
+//   }
+
+//   return maxArea;
+// }
