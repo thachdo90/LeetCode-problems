@@ -59,6 +59,43 @@
 // store substring
   // process substring when we encouter a new uppercase or an uppercase
 
+// String.prototype.isUppercase = function() {
+//   return this.charCodeAt() >= 65 && this.charCodeAt() <= 90;
+// }
+// String.prototype.isLowercase = function() {
+//   return this.charCodeAt() >= 97 && this.charCodeAt() <= 122;
+// }
+// String.prototype.isNumber = function() {
+//   return (!isNaN(this))
+// }
+// var countOfAtoms = function(formula) {
+//   let atoms = {};
+
+//   const processString = (string, multiplier) => {
+//     let storage = {};
+//     let atomName = '';
+//     let count = 0;
+//     let numString = '';
+//     for (let character of string) {
+//       if (character.isUppercase()) {
+//         if (atomName.length > 0) {
+//           storage[atomName] = (storage[atomName] || 0) + (parseInt(numString) || count)
+//         }
+//         numString = '';
+//         atomName = character;
+//         count = 1;
+//       } else if (character.isLowercase()) {
+//         atomName += character;
+//       } else if (character.isNumber()) {
+//         numString += character;
+//       }
+//     }
+//     storage[atomName] = (storage[atomName] || 0) + (parseInt(numString) || count)
+//     return storage;
+//   }
+// };
+
+// Second iteration
 String.prototype.isUppercase = function() {
   return this.charCodeAt() >= 65 && this.charCodeAt() <= 90;
 }
@@ -68,18 +105,48 @@ String.prototype.isLowercase = function() {
 String.prototype.isNumber = function() {
   return (!isNaN(this))
 }
-var countOfAtoms = function(formula) {
-  let atoms = {};
+var countOfAtoms = function(formula, multiplier = 1) {
+  let storage = {};
+  let atomName = '';
+  let count = 0;
+  let numString = '';
+  let openedGroup = false;
+  let closedGroup = false;
+  let openParens = 0;
+  let subGroup = '';
+  let subGroupCount = '';
+  for (let character of formula) {
+    if (closedGroup) {
+      if (character.isNumber()) {
+        subGroupCount += character;
+        // number was recorded but not processed
+        continue;
+      } else {
+        let subResults = countOfAtoms(subGroup, parseInt(subGroupCount) || 1);
+        for (let [key, value] of Object.entries(subResults)) {
+          storage[key] = (storage[key] || 0) + value;
+        }
+        openedGroup = false;
+        closedGroup = false;
+        openParens = 0;
+        subGroup = '';
+        subGroupCount = '';
+      }
+    }
 
-  const processString = (string, multiplier) => {
-    let storage = {};
-    let atomName = '';
-    let count = 0;
-    let numString = '';
-    for (let character of string) {
+    if (openedGroup) {
+      if (character === '(') {
+        openParens += 1;
+      } else if (character === ')') {
+        openParens -= 1;
+        if (openParens === 0) closedGroup = true;
+      } else {
+        subGroup += character;
+      }
+    } else {
       if (character.isUppercase()) {
         if (atomName.length > 0) {
-          storage[atomName] = (storage[atomName] || 0) + (parseInt(numString) || count)
+          storage[atomName] = (storage[atomName] || 0) + multiplier * (parseInt(numString) || count)
         }
         numString = '';
         atomName = character;
@@ -88,9 +155,12 @@ var countOfAtoms = function(formula) {
         atomName += character;
       } else if (character.isNumber()) {
         numString += character;
+      } else if (character === '(') {
+        openedGroup = true;
+        openParens = 1;
       }
     }
-    storage[atomName] = (storage[atomName] || 0) + (parseInt(numString) || count)
-    return storage;
   }
+  storage[atomName] = (storage[atomName] || 0) + multiplier * (parseInt(numString) || count)
+  return storage;
 };
