@@ -112,3 +112,28 @@ var findMedianSortedArrays = function(nums1, nums2) {
   }
 
 };
+
+// saved space for this merge strategy
+var findMedianSortedArrays = function(nums1, nums2) {
+  let nums = [];
+  let pointer1 = 0;
+  let pointer2 = 0;
+  while (pointer1 < nums1.length || pointer2 < nums2.length) {
+    if (nums1[pointer1] <= nums2[pointer2] || nums2[pointer2] === undefined) {
+      nums.push(nums1[pointer1]);
+      pointer1++;
+    } else {
+      nums.push(nums2[pointer2]);
+      pointer2++;
+    }
+  }
+  let length = nums.length;
+  if (nums.length % 2 === 0) {
+    let rightIndex = length / 2;
+    let leftIndex = rightIndex - 1;
+    return (nums[leftIndex] + nums[rightIndex]) / 2
+  } else {
+    return nums[Math.floor(length / 2)]
+  }
+
+};
