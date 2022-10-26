@@ -46,44 +46,44 @@
     //the palindrome will be leftString + rightString
   // update the longestPalie
 // return longestPalie
-var longestPalindrome = function(s) {
-  let longestPalie = '';
-  // iterate through each letter
-  for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
-    let leftString = '';
-    let rightString = '';
-    let pointer2 = pointer1;
-    let pointer3 = s.length - 1;
-    let palindrome = '';
-    // look for palindrome that starts with pointer 1's value
-    while (pointer2 < pointer3) {
-      if (s[pointer2] === s[pointer3]) {
-        leftString = leftString + s[pointer2];
-        rightString = s[pointer2] + rightString;
-        pointer2++;
-        pointer3--;
-      } else {
-        // resetting pointers and substrings
-        leftString = '';
-        rightString = '';
-        if (pointer1 === pointer2) {
-          pointer3--;
-        } else {
-          pointer2 = pointer1;
-        }
-      }
-    }
-    // handle odd vs even number of characters in palindrome
-    if (pointer2 === pointer3) {
-      palindrome = leftString + s[pointer2] + rightString;
-    } else {
-      palindrome = leftString + rightString;
-    }
-    console.log('start index ', pointer1, ' palindrome: ', palindrome)
-    if (palindrome.length > longestPalie.length) longestPalie = palindrome;
-  }
-  return longestPalie;
-};
+// var longestPalindrome = function(s) {
+//   let longestPalie = '';
+//   // iterate through each letter
+//   for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
+//     let leftString = '';
+//     let rightString = '';
+//     let pointer2 = pointer1;
+//     let pointer3 = s.length - 1;
+//     let palindrome = '';
+//     // look for palindrome that starts with pointer 1's value
+//     while (pointer2 < pointer3) {
+//       if (s[pointer2] === s[pointer3]) {
+//         leftString = leftString + s[pointer2];
+//         rightString = s[pointer2] + rightString;
+//         pointer2++;
+//         pointer3--;
+//       } else {
+//         // resetting pointers and substrings
+//         leftString = '';
+//         rightString = '';
+//         if (pointer1 === pointer2) {
+//           pointer3--;
+//         } else {
+//           pointer2 = pointer1;
+//         }
+//       }
+//     }
+//     // handle odd vs even number of characters in palindrome
+//     if (pointer2 === pointer3) {
+//       palindrome = leftString + s[pointer2] + rightString;
+//     } else {
+//       palindrome = leftString + rightString;
+//     }
+//     console.log('start index ', pointer1, ' palindrome: ', palindrome)
+//     if (palindrome.length > longestPalie.length) longestPalie = palindrome;
+//   }
+//   return longestPalie;
+// };
 
 // Strategy above does not work for "xaabacxcabaaxcabaax" because it pointer 3 had to be reset back out to the 3rd x but it was "stuck" on the second x
 
@@ -140,22 +140,56 @@ var longestPalindrome = function(s) {
 
 //more optimization, beat 32%, 378 ms, beat 98%
 // tradeoff: used pointers on the same string instead of slicing the string, the method is less readible for the future and there's more coupling because methods are refering to the same string
+// var longestPalindrome = function(s) {
+//   let longestPalie = '';
+//   const isPalindrome = (leftPointer, rightPointer) => {
+//     while (leftPointer < rightPointer) {
+//       if (s[leftPointer] !== s[rightPointer]) return false
+//       leftPointer++;
+//       rightPointer--;
+//     }
+//     return true;
+//   }
+//   for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
+//     if (s.length - pointer1 < longestPalie.length) break;
+//     for (let pointer2 = s.length - 1; pointer2 >= pointer1; pointer2--) {
+//       if (pointer2 - pointer1 + 1 <= longestPalie.length) break;
+//       if (isPalindrome(pointer1, pointer2) && pointer2 - pointer1 + 1 > longestPalie.length) longestPalie = s.slice(pointer1, pointer2 + 1)
+//     }
+//   }
+//   return longestPalie;
+// };
+
+// tried expanding from the center strategy like leetcode recommended but time was slower than my optimized cubic.
 var longestPalindrome = function(s) {
   let longestPalie = '';
-  const isPalindrome = (leftPointer, rightPointer) => {
-    while (leftPointer < rightPointer) {
-      if (s[leftPointer] !== s[rightPointer]) return false
-      leftPointer++;
-      rightPointer--;
+  for (let index = 0; index < 2 * s.length - 1; index++) {
+    center = index / 2;
+    console.log('center', center)
+    let palindrome = '';
+    let leftPointer, rightPointer;
+    if (index % 2 === 0) {
+      // center is integer index
+      palindrome = s[center];
+      leftPointer = center - 1;
+      rightPointer = center + 1;
+    } else {
+      // center is in between two indices
+      leftPointer = Math.floor(center);
+      rightPointer = Math.ceil(center);
     }
-    return true;
-  }
-  for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
-    if (s.length - pointer1 < longestPalie.length) break;
-    for (let pointer2 = s.length - 1; pointer2 >= pointer1; pointer2--) {
-      if (pointer2 - pointer1 + 1 <= longestPalie.length) break;
-      if (isPalindrome(pointer1, pointer2) && pointer2 - pointer1 + 1 > longestPalie.length) longestPalie = s.slice(pointer1, pointer2 + 1)
+    // expand outwards until not a palindrome or hits the edge
+    while (leftPointer >= 0 && rightPointer < s.length) {
+      if (s[leftPointer] === s[rightPointer]) {
+        palindrome = s[leftPointer] + palindrome + s[rightPointer];
+      } else {
+        break;
+      }
+      leftPointer--;
+      rightPointer++;
     }
+    if (palindrome.length > longestPalie.length) longestPalie = palindrome;
+
   }
   return longestPalie;
 };
