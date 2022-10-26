@@ -115,13 +115,36 @@ var longestPalindrome = function(s) {
 // };
 
 // with optimization, beat 21%, 808 ms
+// var longestPalindrome = function(s) {
+//   let longestPalie = '';
+//   const isPalindrome = (string) => {
+//     let leftPointer = 0;
+//     let rightPointer = string.length - 1;
+//     while (leftPointer < rightPointer) {
+//       if (string[leftPointer] !== string[rightPointer]) return false
+//       leftPointer++;
+//       rightPointer--;
+//     }
+//     return true;
+//   }
+//   for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
+//     if (s.length - pointer1 < longestPalie.length) break;
+//     for (let pointer2 = s.length; pointer2 > pointer1; pointer2--) {
+//       if (pointer2 - pointer1 <= longestPalie.length) break;
+//       let substring = s.slice(pointer1, pointer2)
+//       if (isPalindrome(substring) && substring.length > longestPalie.length) longestPalie = substring
+//     }
+//   }
+//   return longestPalie;
+// };
+
+//more optimization, beat 32%, 378 ms, beat 98%
+// tradeoff: used pointers on the same string instead of slicing the string, the method is less readible for the future and there's more coupling because methods are refering to the same string
 var longestPalindrome = function(s) {
   let longestPalie = '';
-  const isPalindrome = (string) => {
-    let leftPointer = 0;
-    let rightPointer = string.length - 1;
+  const isPalindrome = (leftPointer, rightPointer) => {
     while (leftPointer < rightPointer) {
-      if (string[leftPointer] !== string[rightPointer]) return false
+      if (s[leftPointer] !== s[rightPointer]) return false
       leftPointer++;
       rightPointer--;
     }
@@ -129,10 +152,9 @@ var longestPalindrome = function(s) {
   }
   for (let pointer1 = 0; pointer1 < s.length; pointer1++) {
     if (s.length - pointer1 < longestPalie.length) break;
-    for (let pointer2 = s.length; pointer2 > pointer1; pointer2--) {
-      if (pointer2 - pointer1 <= longestPalie.length) break;
-      let substring = s.slice(pointer1, pointer2)
-      if (isPalindrome(substring) && substring.length > longestPalie.length) longestPalie = substring
+    for (let pointer2 = s.length - 1; pointer2 >= pointer1; pointer2--) {
+      if (pointer2 - pointer1 + 1 <= longestPalie.length) break;
+      if (isPalindrome(pointer1, pointer2) && pointer2 - pointer1 + 1 > longestPalie.length) longestPalie = s.slice(pointer1, pointer2 + 1)
     }
   }
   return longestPalie;
