@@ -63,3 +63,34 @@ var intToRoman = function(num) {
     }
     return results
 };
+// greedy approach as explained by solutions
+// subtract values that have been accounted for from left to right
+// this requires less hard coding
+var intToRoman = function(num) {
+  let values = [
+    [1000, 'M'],
+    [900, 'CM'],
+    [500, 'D'],
+    [400, 'CD'],
+    [100, 'C'],
+    [90, 'XC'],
+    [50, 'L'],
+    [40, 'XL'],
+    [10, 'X'],
+    [9, 'IX'],
+    [5, 'V'],
+    [4, 'IV'],
+    [1, 'I']
+  ];
+  let pointer = 0;
+  let results = '';
+  while (num > 0) {
+    if (values[pointer][0] <= num) {
+      num -= values[pointer][0];
+      results += values[pointer][1];
+    } else {
+      pointer++;
+    }
+  }
+  return results;
+};
