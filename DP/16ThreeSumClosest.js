@@ -40,3 +40,42 @@ var threeSumClosest = function(nums, target) {
   }
   return closestSum;
 };
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+// trying two pointers approach as stated in solution
+// pseudo code
+// sort array
+// iterate through array
+  // set up two pointers at the far left and right of subarray (i +1 and length - 1)
+  // newtarget is target - nums[i], we want the two remaining sums to be as close to this as possible
+  // calculate the newDiff, which is newTarget - (sumOfTwo)
+  // if the newDiff is positive, we can increment the left to make the sumOfTwo bigger, to be closer to newTarget
+  // otherwise, decrement the right;
+  // at every step, update closestSum;
+  var threeSumClosest = function(nums, target) {
+    nums.sort((a, b) => a - b);
+    let closestSum = nums[0] + nums[1] + nums[2];
+    for (let p1 = 0; p1 < nums.length - 2; p1++) {
+      let p2 = p1 + 1;
+      let p3 = nums.length - 1;
+      let newDiff = target - nums[p1];
+      while (p2 < p3) {
+        let twoSum = nums[p2] + nums[p3];
+        let finalDiff = newDiff - twoSum;
+        if (Math.abs(newDiff - twoSum) < Math.abs(closestSum - target)) closestSum = nums[p1] + twoSum;
+        if (finalDiff> 0) {
+          p2++;
+        } else if (finalDiff < 0) {
+          p3--;
+        } else {
+          return nums[p1] + twoSum;
+        }
+      }
+    }
+    return closestSum;
+
+  }
