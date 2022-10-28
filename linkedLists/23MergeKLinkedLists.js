@@ -84,3 +84,51 @@ var mergeKLists = function(lists) {
   }
   return falseHead.next;
 };
+
+// divide and conquer strategy
+// strategy: merge two lists at a time until there's only one left
+
+var mergeKLists = function(lists) {
+  const mergeTwoLists = (list1, list2) => {
+    if (!list2 && !list1) {
+      return null;
+    } else if (!list1) {
+      return list2;
+    } else if (!list2){
+      return list1;
+    };
+    let falseHead = new ListNode();
+    let current = falseHead;
+    while (list1 && list2) {
+      if (list1.val <= list2.val) {
+        current.next = list1;
+        current = current.next;
+        if (list1.next) {
+          list1 = list1.next;
+        } else {
+          current.next = list2;
+          return falseHead.next;
+        }
+      } else {
+        current.next = list2;
+        current = current.next;
+        if (list2.next) {
+          list2 = list2.next;
+        } else {
+          current.next = list1;
+          return falseHead.next;
+        }
+      }
+    }
+  }
+
+  while (lists.length > 1) {
+    let combinedLists = [];
+    for (let i = 0; i < lists.length; i += 2) {
+      let result = mergeTwoLists(lists[i], lists[i + 1])
+      combinedLists.push(result);
+    }
+    lists = combinedLists;
+  }
+  return lists[0] || null;
+};
