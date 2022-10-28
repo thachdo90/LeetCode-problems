@@ -28,7 +28,7 @@
   // link the current head to the head of the last list
   // move the pointer in the last list up, if it's not null, push it back into the array
 // return falseHead.next
-// time complexity: O(k*ki*log(k)) where k is the number of lists in the array, ki is the length of each list, and log(k) because we're sorting it every time
+// time complexity: O(k*ki*nlog(k)) where k is the number of lists in the array, ki is the length of each list, and log(k) because we're sorting it every time
 
 //super slow but got the job done!
 var mergeKLists = function(lists) {
@@ -46,6 +46,41 @@ var mergeKLists = function(lists) {
         lists.push(lastNode)
       }
     }
+  }
+  return falseHead.next;
+};
+
+// slightly improved time complexity from n*n*log(n) to n^2
+var mergeKLists = function(lists) {
+  let falseHead = new ListNode();
+  let current = falseHead;
+  let nextNode;
+  let finishedIteration = false;
+
+  while (finishedIteration === false) {
+    let index;
+    finishedIteration = true;
+    nextNode = undefined;
+    for (let i = 0; i < lists.length; i++) {
+      let node = lists[i];
+      if (node) {
+        if (nextNode === undefined) {
+          nextNode = node
+          index = i;
+          finishedIteration = false;
+        } else if (node.val < nextNode.val) {
+          nextNode = node
+          index = i;
+          finishedIteration = false;
+        }
+      }
+    }
+    if (index !== undefined) {
+      lists[index] = nextNode.next;
+      current.next = nextNode;
+      current = current.next;
+    }
+    if (finishedIteration) break;
   }
   return falseHead.next;
 };
