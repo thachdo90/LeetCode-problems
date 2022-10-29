@@ -19,3 +19,11 @@ const printList = (head) => {
   head = head.next;
   }
 }
+
+const listIntoArray = head => {
+  let results = [];
+  while (head) {
+    results.push(head.val)
+    head = head.next;
+  }
+}
