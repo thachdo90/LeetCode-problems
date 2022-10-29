@@ -68,3 +68,44 @@ var threeSum = function(nums) {
   // console.log(archive)
   return results;
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+
+// strategy:
+// sort nums nlog(n) time
+// iterate through nums, for each pass, have two pointers traversing the subarray to the right n^2
+// keep a running set to check for duplicates
+// total time O(nlog(n) + n^2) => O(n^2)
+var threeSum = function(nums) {
+  nums.sort((a, b) => a - b);
+  let storage = new Set();
+  let results = [];
+  for (let p1 = 0; p1 < nums.length - 2; p1++) {
+    let p2 = p1 + 1;
+    let p3 = nums.length - 1;
+    let target = nums[p1] === 0 ? 0 : nums[p1] * -1;
+    if (nums[p1] > 0) break;
+
+    while (p2 < p3) {
+      if (nums[p2] > target / 2) break;
+      let twoSum = nums[p2] + nums[p3];
+      if (twoSum < target) {
+        p2++;
+      } else if (twoSum > target) {
+        p3--;
+      } else {
+        let triplet = [nums[p1], nums[p2], nums[p3]];
+        let tripletString = JSON.stringify(triplet);
+        if (!storage.has(tripletString)) {
+          results.push(triplet);
+          storage.add(tripletString);
+        }
+        p3--;
+      }
+    }
+  }
+  return results;
+};
