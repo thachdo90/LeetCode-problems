@@ -30,3 +30,32 @@ var lengthOfLongestSubstring = function(s) {
   }
   return longestCount;
 };
+
+var lengthOfLongestSubstring = function(s) {
+  if (s.length === 0) return 0;
+
+  let p1 = 0;
+  let p2 = 0;
+  let storage = new Set();
+  let longestCount = 1;
+  while (p2 < s.length) {
+    let value2 = s[p2]
+    if (!storage.has(value2)) {
+      storage.add(value2)
+    } else {
+      console.log('updating count ', p1, ' to ', p2)
+      let count = p2 - p1;
+      longestCount = Math.max(longestCount, count);
+      while (s[p1] !== value2) {
+        storage.delete(s[p1]);
+        p1++;
+      }
+      p1++;
+    }
+    p2++;
+  }
+  let count = p2 - p1;
+  longestCount = Math.max(longestCount, count);
+  return longestCount;
+
+};
