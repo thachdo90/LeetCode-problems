@@ -59,3 +59,37 @@ var lengthOfLongestSubstring = function(s) {
   return longestCount;
 
 };
+
+// strategy: optimized sliding window
+// init 2 pointers
+// init longestCount = 1;
+// init hashmap
+// while loop as long as p2 can increment
+  // check if value2 is in hashmap AND that its to the right of p1
+    // if it isn't, add p2 to hashmap with index
+    // if it is,
+      //compute count and update longest count
+      //move p1 up
+
+      var lengthOfLongestSubstring = function(s) {
+        if (s.length === 0) return 0;
+
+        let p1 = 0;
+        let p2 = 0;
+        let longestCount = 1;
+        let hashmap = {};
+        while (p2 < s.length) {
+          let value2 = s[p2];
+          if (hashmap[value2] === undefined || hashmap[value2] < p1) {
+            hashmap[value2] = p2;
+          } else {
+            longestCount = Math.max(p2 - p1, longestCount)
+            p1 = hashmap[value2] + 1;
+            hashmap[value2] = p2;
+          }
+          p2++;
+        }
+        longestCount = Math.max(p2 - p1, longestCount)
+        return longestCount;
+
+      };
