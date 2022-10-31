@@ -12,9 +12,11 @@
 // second pointer will start from first pointer and go out to search for non zero
 // time complexity O(2n) = O(n)
 var moveZeroes = function(nums) {
+  let p2;
   for (let p1 = 0; p1 < nums.length; p1++) {
     if (nums[p1] === 0) {
-      let p2 = p1 + 1;
+      // let p2 = p1 + 1; //oh, this resets p2
+      p2 = (p2 || p1 + 1)  //fixed
       while (nums[p2] === 0) {
         p2++;
       }
@@ -26,7 +28,7 @@ var moveZeroes = function(nums) {
   return nums;
 };
 
-// a bit faster
+// a bit faster, why though? this is still two pointer??
 var moveZeroes = function(nums) {
   let p1 = -1;
   for (let p2 = 0; p2 < nums.length; p2++) {
