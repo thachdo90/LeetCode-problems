@@ -29,3 +29,41 @@ var rotate = function(nums, k) {
 
 // debugger;
 rotate([0,1,2,3,4,5], 4);
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+
+//  I: array of ints
+// O: array of ints
+// C: change in place, do not use new array
+// E: k > nums.length
+
+// obs: if k === nums.length, nothing changes
+// obs: if k > nums.length, then k = k modulo nums.length
+
+// using reverse strategy
+var rotate = function(nums, k) {
+  if (k === nums.length) return nums;
+  k = k % nums.length;
+  nums.reverse();
+  const reverse = (startIndex, endIndex, array) => {
+    while (startIndex < endIndex) {
+      let temp = nums[startIndex];
+      nums[startIndex] = nums[endIndex];
+      nums[endIndex] = temp;
+      startIndex++;
+      endIndex--;
+    }
+  }
+  let p1 = 0;
+  let p2 = k - 1;
+  reverse(p1, p2, nums);
+  p1 = k;
+  p2 = nums.length - 1;
+  reverse(p1, p2, nums);
+
+  return nums;
+};
