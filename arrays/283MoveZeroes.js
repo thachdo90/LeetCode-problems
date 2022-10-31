@@ -25,3 +25,17 @@ var moveZeroes = function(nums) {
   }
   return nums;
 };
+
+// a bit faster
+var moveZeroes = function(nums) {
+  let p1 = -1;
+  for (let p2 = 0; p2 < nums.length; p2++) {
+    if (nums[p2] !== 0) {
+      p1++;
+      let temp = nums[p2];
+      nums[p2] = nums[p1];
+      nums[p1] = temp;
+    }
+  }
+  return nums;
+};
