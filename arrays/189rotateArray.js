@@ -27,8 +27,6 @@ var rotate = function(nums, k) {
   return nums;
 };
 
-// debugger;
-rotate([0,1,2,3,4,5], 4);
 
 /**
  * @param {number[]} nums
@@ -64,6 +62,45 @@ var rotate = function(nums, k) {
   p1 = k;
   p2 = nums.length - 1;
   reverse(p1, p2, nums);
+
+  return nums;
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+
+//  I: array of ints
+// O: array of ints
+// C: change in place, do not use new array
+// E: k > nums.length
+
+// obs: if k === nums.length, nothing changes
+// obs: if k > nums.length, then k = k modulo nums.length
+
+var rotate = function(nums, k) {
+  if (k === nums.length) return nums;
+  k = k % nums.length;
+  let startIndex = 0;
+  let pointer = startIndex;
+  let steps = nums.length - 1;
+  let prevValue = nums[pointer];
+  let nextValue = nums[pointer];
+  while (steps >= 0) {
+    pointer = (pointer + k) % nums.length;
+    steps--;
+    nextValue = nums[pointer];
+    nums[pointer] = prevValue;
+    prevValue = nextValue;
+    // console.log(nums);
+    if (pointer === startIndex) {
+      pointer++;
+      startIndex = pointer;
+      prevValue = nums[pointer]
+    }
+  }
 
   return nums;
 };
