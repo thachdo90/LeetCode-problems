@@ -33,6 +33,7 @@ var searchMatrix = function(matrix, target) {
     if (rowMin <= target && target <= rowMax) {
       for (let number of matrix[row]) {
         if (target === number) return true;
+        if (number > target) break;
       }
     } else if (target > rowMax) {
       continue;
