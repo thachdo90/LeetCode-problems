@@ -157,3 +157,51 @@ var searchMatrix = function(matrix, target) {
   }
 
 };
+
+var searchMatrix = function(matrix, target) {
+  if (target < matrix[0][0] || target > matrix[matrix.length - 1][matrix[0].length - 1]) return false;
+
+  const binarySearchRow = (row, c1, c2) => {
+    let LB = c1;
+    let UB = c2;
+    if (matrix[row][LB] === target || matrix[row][UB] === target) return true;
+    while (LB < UB - 1) {
+      let midIndex = Math.floor((LB + UB) / 2);
+      let midValue = matrix[row][midIndex];
+      if (midValue < target) {
+        LB = midIndex;
+      } else if (midValue > target) {
+        UB = midIndex;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const searchSubMatrix = (r1, c1, r2, c2) => {
+    for (let row = r1; row <= r2; row++) {
+      let rowMin = matrix[row][c1];
+      let rowMax = matrix[row][c2];
+      if (rowMin <= target && target <= rowMax) {
+        if (binarySearchRow(row, c1, c2)) return true;
+      } else if (target > rowMax) {
+        continue;
+      } else if (target < rowMin) {
+        break;
+      }
+    }
+    return false;
+  }
+
+  let row = 0;
+  let col = 0;
+  while (matrix[row][col] <= target) {
+    if (matrix[row][col] === target) return true;
+    if (row === matrix.length - 1 || col === matrix[0].length - 1 || matrix[row + 1][col + 1] > target) {
+      return searchSubMatrix(0, col + 1, row, matrix[row].length - 1) || searchSubMatrix(row + 1, 0, matrix.length - 1, col);
+    }
+    row++;
+    col++;
+  }
+};
