@@ -31,3 +31,25 @@
     }
     return false;
   };
+
+  var increasingTriplet = function(nums) {
+    let triplet = []
+    for (let number of nums) {
+      if (triplet[0] === undefined) {
+        triplet[0] = number;
+      } else {
+        if (number < triplet[0]) {
+          triplet[0] = number
+        } else if (number > triplet[0]) {
+          if (triplet[1] === undefined) {
+            triplet[1] = number;
+          } else if (number < triplet[1]) {
+            triplet[1] = number;
+          } else if (number > triplet[1]) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
