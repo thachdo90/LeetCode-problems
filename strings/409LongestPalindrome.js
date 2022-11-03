@@ -50,3 +50,36 @@ var longestPalindrome = function(s) {
   }
   return longestCount;
 };
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+// I: string
+// O: number, length of palindrome
+// C:
+// E:
+
+// strategy: iterate through each character and the space between the chars
+// have two pointers that iterate outward from the center, if they match, add 2 to the count
+// a string that has 8 characters also has 7 spaces in between, a string with n length also has n - 1 spaces in between
+// totally misunderstood the problem
+
+var longestPalindrome = function(s) {
+  let storage = new Set();
+  let oddCount = 0;
+  let length = 0;
+  for (let char of s) {
+    if (!storage.has(char)) {
+      oddCount++;
+      storage.add(char);
+    } else {
+      oddCount--;
+      length += 2;
+      storage.delete(char);
+    }
+  }
+
+  if (oddCount > 0) length++;
+  return length;
+};
