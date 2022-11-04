@@ -100,3 +100,24 @@ var longestValidParentheses = function(s) {
   return longestCount;
 
 };
+
+// use a stack, this achieves what I wanted to do with a hashmap but a hashmap would be over kill.
+
+var longestValidParentheses = function(s) {
+  let longestCount = 0;
+  let stack = [-1];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === '(') {
+      stack.push(i)
+    } else {
+      stack.pop();
+      if (stack.length === 0) {
+        stack.push(i);
+      } else {
+        longestCount = Math.max(longestCount, i - stack[stack.length - 1])
+      }
+    }
+  }
+
+  return longestCount;
+};
