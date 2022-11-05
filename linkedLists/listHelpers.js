@@ -26,4 +26,5 @@ const listIntoArray = head => {
     results.push(head.val)
     head = head.next;
   }
+  return results;
 }
