@@ -46,3 +46,33 @@ var partitionLabels = function(s) {
   }
   return results;
 };
+
+/**
+ * @param {string} s
+ * @return {number[]}
+ */
+
+// I: string
+// O: array of numbers
+// C:
+// E: length of 1, result is the entire string length
+
+// tried optimized strategy given in the solution where you only need to keep track of the end index, still 2 pass though
+var partitionLabels = function(s) {
+  let hashmap = {};
+  let results = [];
+  for (let i = 0; i < s.length; i++) {
+    hashmap[s[i]] = i;
+  }
+  console.log(hashmap)
+  let startIndex = -1;
+  let endIndex;
+  for (let i = 0; i < s.length; i++) {
+    endIndex = Math.max(endIndex, hashmap[s[i]]) || hashmap [s[i]]
+    if (i === endIndex) {
+      results.push(endIndex - startIndex);
+      startIndex = i;
+    }
+  }
+  return results;
+};
