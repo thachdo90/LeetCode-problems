@@ -24,3 +24,10 @@ ARRAYS:
 
 LINKED LISTS:
 - think about using pointers and false head
+
+
+BFS
+- iteratively (example O1 matrix)
+  - learned to use a queue to process one level of the tasks in the queue, while adding the next level to a new queue
+  - this strategy ended up being O(M), size of Matrix, because the tasks don't get added to the queue if it's already done/optimal
+  - I thought about using DFS here but it would have been costly since the work that's done by one cell, would have to be overwritten by the the work of another cell. But using BFS, they're simultaneously updating their work outward.
