@@ -37,3 +37,31 @@ var combine = function(n, k) {
   console.log(hashmap)
   return hashmap[k];
 };
+
+// Backtrack strategy from solution:
+// build a recursive helper function that takes in a starting number and the running array
+// iterate from the starting number up to the max number
+// add current number to the array
+// if array reaches size, add it to results
+// if not recurse
+
+// theres' an opportunity to maximize by calculating the potential length and stopping recursion short
+
+// O(nCk) i.e. size of the output array
+var combine = function(n, k) {
+  let results = [];
+
+  let backTrack = (start, array) => {
+    for (let num = start; num <= n; num++) {
+      let newArray = array.slice();
+      newArray.push(num);
+      if (newArray.length === k) {
+        results.push(newArray);
+      } else {
+        backTrack(num + 1, newArray);
+      }
+    }
+  }
+  backTrack(1, []);
+  return results;
+};
