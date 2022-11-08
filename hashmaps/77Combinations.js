@@ -65,3 +65,23 @@ var combine = function(n, k) {
   backTrack(1, []);
   return results;
 };
+
+// optmimized by identifying break points and stopping iteration early
+var combine = function(n, k) {
+  let results = [];
+
+  let backTrack = (start, array) => {
+    for (let num = start; num <= n; num++) {
+      let newArray = array.slice();
+      newArray.push(num);
+      let length = newArray.length;
+      if (length === k) {
+        results.push(newArray);
+      } else if (length + n - num >= k) {
+        backTrack(num + 1, newArray);
+      }
+    }
+  }
+  backTrack(1, []);
+  return results;
+};
