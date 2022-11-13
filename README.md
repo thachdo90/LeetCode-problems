@@ -24,6 +24,7 @@ ARRAYS:
 
 LINKED LISTS:
 - think about using pointers and false head
+- hashmaps can also be used to store nodes!
 
 
 BFS
