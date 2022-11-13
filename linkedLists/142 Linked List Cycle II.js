@@ -49,3 +49,36 @@ var detectCycle = function(head) {
   }
   return null;
 };
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+// I: list
+// O: node where cycle begins or null
+// C: don't modify linked list
+// E: link starts at 0
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+
+// strategy: have a fast and slower pointer iterate through the lists, while storing nodes in their separate stacks
+// compare the two nodes, if they ever match, then we found a cycle, but we don't know where the beginning node was
+// but now we can track the stack, which should be the same until they diverge
+// if l2 ever hits null, return null, there is no cycle
+var detectCycle = function(head) {
+  let set = new Set();
+  while (head) {
+    if (set.has(head)) {
+      return head;
+    } else {
+      set.add(head);
+      head = head.next;
+    }
+  }
+  return null;
+};
