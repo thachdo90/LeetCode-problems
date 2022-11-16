@@ -43,3 +43,45 @@ var pathSum = function(root, targetSum) {
   return result;
 
 };
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {number[][]}
+ */
+// I: root node of tree
+// O: array of arrays, each inner array represents the values of root to leaf path
+// C: node values and target sum can be negative so we must check every possible leaf
+// E: cases where there's no path, or tree is null
+
+// strategy: DFS, backtracking;
+var pathSum = function(root, targetSum) {
+  if (!root) return []
+  let result = [];
+  let path = [];
+  const helper = (root, sum) => {
+    path.push(root.val);
+    sum -= root.val;
+    if (!root.left && !root.right) {
+      if (sum === 0) result.push(path.slice());
+    } else {
+      if (root.left) {
+        helper(root.left, sum);
+      }
+      if (root.right) {
+        helper(root.right, sum);
+      }
+    }
+    path.pop();
+  }
+  helper(root, targetSum);
+  return result;
+};
