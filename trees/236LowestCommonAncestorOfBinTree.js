@@ -48,3 +48,33 @@ var lowestCommonAncestor = function(root, p, q) {
   return result;
 
 };
+// optimized a bit
+var lowestCommonAncestor = function(root, p, q) {
+  let result;
+  const searchTree = (root) => {
+    let mid, left, right;
+    if (root === p || root === q) {
+      mid = true;
+    } else {
+      mid = false;
+    }
+    if (root.left) {
+      left = searchTree(root.left)
+    } else {
+      left = false;
+    }
+    if (root.right) {
+      right = searchTree(root.right)
+    } else {
+      right = false;
+    }
+    if (mid + left + right >= 2) {
+      result = root;
+      return;
+    };
+    return mid || left || right;
+  }
+  searchTree(root);
+  return result;
+
+};
