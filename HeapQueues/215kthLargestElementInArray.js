@@ -73,3 +73,9 @@ var findKthLargest = function(nums, k) {
   console.log('queue array', queue.toArray())
   return queue.headValue();
 };
+
+// solved by sorting O(nlogn)
+var findKthLargest = function(nums, k) {
+  nums.sort((a, b) => b - a);
+  return nums[k - 1];
+};
