@@ -25,3 +25,24 @@ var frequencySort = function(s) {
   }
   return result;
 };
+
+// strategy 2: using array join but it's slower?
+var frequencySort = function(s) {
+  let hashmap = {};
+  for (let char of s) {
+    hashmap[char] = (hashmap[char] || 0) + 1;
+  }
+  let letterFreqs = Object.entries(hashmap);
+  letterFreqs.sort((a, b) => b[1] - a[1]);
+  let result = [];
+  for (let letter of letterFreqs) {
+    let char = letter[0];
+    let stringArr = [];
+    for (let count = 0; count < letter[1]; count++) {
+      stringArr.push(char);
+    }
+    result.push(stringArr.join(''));
+
+  }
+  return result.join('');
+};
