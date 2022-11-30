@@ -23,3 +23,26 @@ var combinationSum = function(candidates, target) {
   process([], 0, 0);
   return results;
 };
+
+var combinationSum = function(candidates, target) {
+  candidates.sort((a, b) => a - b);
+  let results = [];
+  let sum = 0;
+  let array = [];
+  const process = (startIndex) => {
+    for (let i = startIndex; i < candidates.length; i++) {
+      let newNumber = candidates[i];
+      array.push(newNumber);
+      sum += newNumber;
+      if (sum < target) {
+        process(i);
+      } else if (sum === target) {
+        results.push(array.slice());
+      }
+      sum -= newNumber;
+      array.pop();
+    }
+  }
+  process(0);
+  return results;
+};
