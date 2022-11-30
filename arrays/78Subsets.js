@@ -15,3 +15,24 @@
   }
   return results;
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+ var subsets = function(nums) {
+  let results = [[]];
+  let current = [];
+  const process = (index) => {
+    for (let i = index; i < nums.length; i++) {
+      current.push(nums[i]);
+      results.push(current.slice());
+      if (i < nums.length - 1) {
+        process(i + 1)
+      }
+      current.pop();
+    }
+  }
+  process(0);
+  return results;
+};
