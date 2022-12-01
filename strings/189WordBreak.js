@@ -30,3 +30,26 @@ var wordBreak = function(s, wordDict) {
 
   return process(s);
 };
+
+var wordBreak = function(s, wordDict) {
+  let dict = new Set (wordDict);
+  let memo = {[s.length]: true};
+
+  const process = (index) => {
+    if (memo[index] !== undefined) {
+      return memo[index];
+    } else {
+      let string = '';
+      for (let i = index; i < s.length; i++) {
+        string += s[i];
+        if (dict.has(string)) {
+          if (process(i + 1)) return true;
+        }
+      }
+      memo[index] = false;
+      return false;
+    }
+  }
+
+  return process(0);
+};
